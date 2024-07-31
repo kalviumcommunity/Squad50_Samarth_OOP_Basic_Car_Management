@@ -88,14 +88,12 @@ int main() {
     garage.addCar(car1);
     garage.addCar(car2);
 
-    // Start the car
     car1.start();
     car2.start();
 
     // List cars in the garage
     garage.listCars();
 
-    // Find a car by make/model
     garage.findCarByMakeModel("Toyota", "Corolla");
 
     return 0;
