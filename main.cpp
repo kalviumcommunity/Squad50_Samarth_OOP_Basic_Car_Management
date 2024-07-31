@@ -19,21 +19,21 @@ public:
 
     // Member functions
     void start() {
-        cout << "The car " << model <<" is starting." << endl;
+        cout << "The car " << this->model << " is starting." << endl;
     }
 
     void drive() {
-        if (fuelLevel > 0) {
-            fuelLevel--;
-            cout << "The car is driving. Fuel level is now: " << fuelLevel << endl;
+        if (this->fuelLevel > 0) {
+            this->fuelLevel--;
+            cout << "The car is driving. Fuel level is now: " << this->fuelLevel << endl;
         } else {
             cout << "Cannot drive, fuel level is too low." << endl;
         }
     }
 
     void refuel(int amount) {
-        fuelLevel += amount;
-        cout << "The car is refueled. Fuel level is now: " << fuelLevel << endl;
+        this->fuelLevel += amount;
+        cout << "The car is refueled. Fuel level is now: " << this->fuelLevel << endl;
     }
 };
 
@@ -49,8 +49,8 @@ public:
 
     // Member functions
     void addCar(Car car) {
-        if (cars.size() < capacity) {
-            cars.push_back(car);
+        if (this->cars.size() < this->capacity) {
+            this->cars.push_back(car);
             cout << "Car added to the garage." << endl;
         } else {
             cout << "Garage is full, cannot add more cars." << endl;
@@ -59,13 +59,13 @@ public:
 
     void listCars() {
         cout << "Listing cars in the garage:" << endl;
-        for (Car car : cars) {
+        for (Car car : this->cars) {
             cout << "Car Make: " << car.make << ", Model: " << car.model << endl;
         }
     }
 
     void findCarByMakeModel(string make, string model) {
-        for (Car car : cars) {
+        for (Car car : this->cars) {
             if (car.make == make && car.model == model) {
                 cout << "Car found: Make: " << make << ", Model: " << model << endl;
                 return;
