@@ -15,6 +15,7 @@ The "Basic Car Management Simulation" project aims to create a simple yet effect
 - GasCar: This class inherits from the Car class and includes an additional attribute for fuel level.
 
 #### Attributes
+Attribute: A variable within a class that holds data specific to an object.
 - Make: The manufacturer of the car.
 - Model: The specific model of the car.
 - Year: The year the car was manufactured.
@@ -44,12 +45,15 @@ The "Basic Car Management Simulation" project aims to create a simple yet effect
 
 ## Key OOP Concepts
 ### Classes and Objects
+Meaning:- Class: A blueprint for creating objects, defining a set of attributes and methods.
+          Object: An instance of a class, representing a specific entity with attributes and behaviors.
 Usage: The core of the project revolves around creating classes (Car, ElectricCar, GasCar, Garage) and creating objects from these classes to simulate real-world entities.
 
 ### Inheritance
 Usage: Inheritance allows ElectricCar and GasCar to inherit attributes and methods from the Car class, promoting code reuse and organization.
 
 ### Methods
+Meaning:- Member Function: A function defined within a class that operates on objects of that class.
 Usage: Methods are used to define behaviors for the car objects, such as starting, stopping, driving, and refueling/recharging.
 
 ### The "this" Pointer
