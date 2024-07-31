@@ -57,6 +57,7 @@ Meaning:- Member Function: A function defined within a class that operates on ob
 Usage: Methods are used to define behaviors for the car objects, such as starting, stopping, driving, and refueling/recharging.
 
 ### The "this" Pointer
+Meaning:- The this pointer helps clarify that the member variables and functions being accessed belong to the current instance of the class, ensuring that there is no ambiguity in the code.
 Usage: The this pointer is used to reference the current object within a method or constructor, enhancing code clarity and reducing ambiguity.
 
 ### Encapsulation
