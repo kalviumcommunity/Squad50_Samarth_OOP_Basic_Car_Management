@@ -77,28 +77,31 @@ public:
 
 // Main function
 int main() {
-    // Create an array of Car objects
-    Car carArray[2] = {
-        Car("Toyota", "Corolla", 2020, "Blue", 10),
-        Car("Honda", "Civic", 2019, "Red", 12)
-    };
+   // Dynamically create a Garage object
+    Garage* garage = new Garage(2);
 
-    // Create a Garage object
-    Garage garage(2);
+    // Dynamically create Car objects
+    Car* car1 = new Car("Toyota", "Corolla", 2020, "Blue", 10);
+    Car* car2 = new Car("Honda", "Civic", 2019, "Red", 12);
 
-    // Add and start cars using loop
-    for (int i = 0; i < 2; i++) {
-        garage.addCar(carArray[i]);
-    }
+    // Add cars to the garage
+    garage->addCar(*car1);
+    garage->addCar(*car2);
 
-    for (int i = 0; i < 2; i++) {
-        carArray[i].start();
-    }
+    // Start the cars
+    car1->start();
+    car2->start();
 
-    garage.listCars();
+    // List cars in the garage
+    garage->listCars();
 
     // Find a specific car by make and model
-    garage.findCarByMakeModel("Toyota", "Corolla");
+    garage->findCarByMakeModel("Toyota", "Corolla");
+
+    // Clean up dynamically allocated memory
+    delete car1;
+    delete car2;
+    delete garage;
 
     return 0;
 }
