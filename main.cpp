@@ -12,10 +12,15 @@ public:
     int year;
     string color;
     int fuelLevel;
+    
+    // Static variable to track the total number of cars created
+    static int totalCarsCreated;
 
     // Constructor
     Car(string mk, string mdl, int yr, string clr, int fuel) 
-        : make(mk), model(mdl), year(yr), color(clr), fuelLevel(fuel) {}
+        : make(mk), model(mdl), year(yr), color(clr), fuelLevel(fuel) {
+        totalCarsCreated++;  // Increment the static variable when a new car is created
+    }
 
     // Member functions
     void start() {
@@ -35,7 +40,15 @@ public:
         this->fuelLevel += amount;
         cout << "The car is refueled. Fuel level is now: " << this->fuelLevel << endl;
     }
+
+    // Static function to get the total number of cars created
+    static int getTotalCarsCreated() {
+        return totalCarsCreated;
+    }
 };
+
+// Initialize the static variable
+int Car::totalCarsCreated = 0;
 
 // Garage class definition
 class Garage {
@@ -44,8 +57,13 @@ private:
     vector<Car> cars;
 
 public:
+    // Static variable to track the total number of garages created
+    static int totalGaragesCreated;
+
     // Constructor
-    Garage(int cap) : capacity(cap) {}
+    Garage(int cap) : capacity(cap) {
+        totalGaragesCreated++;  // Increment the static variable when a new garage is created
+    }
 
     // Member functions
     void addCar(Car car) {
@@ -73,11 +91,19 @@ public:
         }
         cout << "Car not found." << endl;
     }
+
+    // Static function to get the total number of garages created
+    static int getTotalGaragesCreated() {
+        return totalGaragesCreated;
+    }
 };
+
+// Initialize the static variable
+int Garage::totalGaragesCreated = 0;
 
 // Main function
 int main() {
-   // Dynamically create a Garage object
+    // Dynamically create a Garage object
     Garage* garage = new Garage(2);
 
     // Dynamically create Car objects
@@ -97,6 +123,10 @@ int main() {
 
     // Find a specific car by make and model
     garage->findCarByMakeModel("Toyota", "Corolla");
+
+    // Display the total number of cars and garages created
+    cout << "Total cars created: " << Car::getTotalCarsCreated() << endl;
+    cout << "Total garages created: " << Garage::getTotalGaragesCreated() << endl;
 
     // Clean up dynamically allocated memory
     delete car1;
