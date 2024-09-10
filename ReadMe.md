@@ -62,3 +62,17 @@ Usage: The this pointer is used to reference the current object within a method 
 
 ### Encapsulation
 Usage: Encapsulation is achieved by keeping the attributes private and providing public getter and setter methods to access and modify them.
+
+
+What is a Static Variable?
+A static variable in a class is shared among all objects of that class. Unlike regular member variables that are unique to each object, a static variable has a single copy that is shared by all instances of the class. Static variables are often used to store data or counters that need to be common across all instances of a class.
+
+How Static Variables Are Used in This Project
+Tracking Total Cars Created:
+
+The Car class has a static variable totalCarsCreated that tracks the total number of cars instantiated. Every time a new Car object is created, this variable is incremented.
+The static member function getTotalCarsCreated() is used to access the value of totalCarsCreated.
+Tracking Total Garages Created:
+
+The Garage class has a static variable totalGaragesCreated that tracks the total number of garages instantiated. Every time a new Garage object is created, this variable is incremented.
+The static member function getTotalGaragesCreated() is used to access the value of totalGaragesCreated.
