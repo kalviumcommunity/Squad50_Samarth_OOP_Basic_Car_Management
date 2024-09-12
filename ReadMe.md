@@ -76,3 +76,7 @@ Tracking Total Garages Created:
 
 The Garage class has a static variable totalGaragesCreated that tracks the total number of garages instantiated. Every time a new Garage object is created, this variable is incremented.
 The static member function getTotalGaragesCreated() is used to access the value of totalGaragesCreated.
+
+#### Encapsulation
+
+Encapsulation is one of the core principles of Object-Oriented Programming (OOP). It involves bundling the data (variables) and methods (functions) that operate on the data into a single unit or class. By using accessors (getters) and mutators (setters), we control access to the internal state of objects, ensuring that the data can only be modified in a controlled manner. This helps protect the integrity of the data and allows for better maintainability of the code. Encapsulation in this project allows us to manage and protect the properties of Car and Garage classes while providing a clear interface for interaction.
