@@ -1,92 +1,68 @@
 #include <iostream>
 #include <vector>
 #include <string>
-
 using namespace std;
 
-// Car class definition
-class Car {
-private:
-    // Private data members
+// Vehicle class (Base class for Car)
+class Vehicle {
+protected:
     string make;
     string model;
     int year;
+
+public:
+    Vehicle(string mk = "Unknown", string mdl = "Unknown", int yr = 0) 
+        : make(mk), model(mdl), year(yr) {}
+
+    virtual void displayInfo() const {
+        cout << "Make: " << make << ", Model: " << model << ", Year: " << year << endl;
+    }
+};
+
+// Car class (Derived from Vehicle - Single Inheritance)
+class Car : public Vehicle {
+private:
     string color;
     int fuelLevel;
 
 public:
-    // Static variable to track the total number of cars created
     static int totalCarsCreated;
 
-    // Default constructor
-    Car() : make("Unknown"), model("Unknown"), year(0), color("Unknown"), fuelLevel(0) {
-        totalCarsCreated++; // Increment the static variable when a new car is created
+    // Constructors
+    Car() : Vehicle(), color("Unknown"), fuelLevel(0) {
+        totalCarsCreated++;
         cout << "Default constructor called for Car" << endl;
     }
 
-    // Parameterized constructor
-    Car(string mk, string mdl, int yr, string clr, int fuel)
-        : make(mk), model(mdl), year(yr), color(clr), fuelLevel(fuel) {
-        totalCarsCreated++; // Increment the static variable when a new car is created
+    Car(string mk, string mdl, int yr, string clr, int fuel) 
+        : Vehicle(mk, mdl, yr), color(clr), fuelLevel(fuel) {
+        totalCarsCreated++;
         cout << "Parameterized constructor called for Car" << endl;
-    }
-
-    // Copy constructor
-    Car(const Car &other)
-        : make(other.make), model(other.model), year(other.year), color(other.color), fuelLevel(other.fuelLevel) {
-        totalCarsCreated++; // Increment the static variable when a new car is created
-        cout << "Copy constructor called for Car" << endl;
     }
 
     // Destructor
     ~Car() {
         cout << "Destructor called for Car: " << model << endl;
-        totalCarsCreated--; // Decrement the static variable when a car is destroyed
+        totalCarsCreated--;
     }
 
-    // Mutator (setter) methods
-    void setMake(string mk) {
-        make = mk;
-    }
-    void setModel(string mdl) {
-        model = mdl;
-    }
-    void setYear(int yr) {
-        year = yr;
-    }
-    void setColor(string clr) {
-        color = clr;
-    }
-    void setFuelLevel(int fuel) {
-        fuelLevel = fuel;
-    }
+    // Accessor methods
+    string getColor() const { return color; }
+    int getFuelLevel() const { return fuelLevel; }
 
-    // Accessor (getter) methods
-    string getMake() const {
-        return make;
-    }
-    string getModel() const {
-        return model;
-    }
-    int getYear() const {
-        return year;
-    }
-    string getColor() const {
-        return color;
-    }
-    int getFuelLevel() const {
-        return fuelLevel;
-    }
+    // Mutator methods
+    void setColor(string clr) { color = clr; }
+    void setFuelLevel(int fuel) { fuelLevel = fuel; }
 
-    // Public member functions to abstract the functionality
-    void start() {
+    // Public methods
+    void start() const {
         cout << "The car " << model << " is starting." << endl;
     }
 
     void drive() {
         if (fuelLevel > 0) {
             fuelLevel--;
-            cout << "The car is driving. Fuel level is now: " << fuelLevel << endl;
+            cout << "The car is driving. Fuel level: " << fuelLevel << endl;
         } else {
             cout << "Cannot drive, fuel level is too low." << endl;
         }
@@ -94,98 +70,85 @@ public:
 
     void refuel(int amount) {
         fuelLevel += amount;
-        cout << "The car is refueled. Fuel level is now: " << fuelLevel << endl;
+        cout << "Refueled. Fuel level: " << fuelLevel << endl;
     }
 
-    // Static function to get the total number of cars created
-    static int getTotalCarsCreated() {
-        return totalCarsCreated;
-    }
+    static int getTotalCarsCreated() { return totalCarsCreated; }
 };
 
-// Initialize the static variable
+// Initialize static variable
 int Car::totalCarsCreated = 0;
+
+// ElectricCar class (Derived from Car - Multilevel Inheritance)
+class ElectricCar : public Car {
+private:
+    int batteryLevel;
+
+public:
+    ElectricCar(string mk, string mdl, int yr, string clr, int fuel, int battery)
+        : Car(mk, mdl, yr, clr, fuel), batteryLevel(battery) {
+        cout << "ElectricCar constructor called." << endl;
+    }
+
+    // Accessor and Mutator for battery level
+    int getBatteryLevel() const { return batteryLevel; }
+    void setBatteryLevel(int battery) { batteryLevel = battery; }
+
+    // Overriding displayInfo function to include battery info
+    void displayInfo() const override {
+        Car::displayInfo();
+        cout << "Battery Level: " << batteryLevel << "%" << endl;
+    }
+};
 
 // Garage class definition
 class Garage {
 private:
-    // Private data members
     int capacity;
     vector<Car> cars;
 
 public:
-    // Static variable to track the total number of garages created
     static int totalGaragesCreated;
 
-    // Default constructor
-    Garage() : capacity(1) {
-        totalGaragesCreated++; // Increment the static variable when a new garage is created
-        cout << "Default constructor called for Garage" << endl;
+    Garage(int cap = 1) : capacity(cap) {
+        totalGaragesCreated++;
+        cout << "Garage constructor called." << endl;
     }
 
-    // Parameterized constructor
-    Garage(int cap) : capacity(cap) {
-        totalGaragesCreated++; // Increment the static variable when a new garage is created
-        cout << "Parameterized constructor called for Garage" << endl;
-    }
-
-    // Destructor
     ~Garage() {
-        cout << "Destructor called for Garage" << endl;
-        totalGaragesCreated--; // Decrement the static variable when a garage is destroyed
+        cout << "Destructor called for Garage." << endl;
+        totalGaragesCreated--;
     }
 
-    // Accessor (getter) methods
-    int getCapacity() const { return capacity; }
-    vector<Car> getCars() const { return cars; }
-
-    // Mutator (setter) methods
-    void setCapacity(int cap) { capacity = cap; }
-
-    // Public member functions to abstract the functionality
     void addCar(Car car) {
         if (cars.size() < capacity) {
             cars.push_back(car);
             cout << "Car added to the garage." << endl;
         } else {
-            cout << "Garage is full, cannot add more cars." << endl;
+            cout << "Garage is full." << endl;
         }
     }
 
-    void listCars() {
+    void listCars() const {
         cout << "Listing cars in the garage:" << endl;
-        for (Car car : cars) {
-            cout << "Car Make: " << car.getMake() << ", Model: " << car.getModel() << endl;
+        for (const auto& car : cars) {
+            car.displayInfo();
         }
     }
 
-    void findCarByMakeModel(string make, string model) {
-        for (Car car : cars) {
-            if (car.getMake() == make && car.getModel() == model) {
-                cout << "Car found: Make: " << make << ", Model: " << model << endl;
-                return;
-            }
-        }
-        cout << "Car not found." << endl;
-    }
-
-    // Static function to get the total number of garages created
-    static int getTotalGaragesCreated() {
-        return totalGaragesCreated;
-    }
+    static int getTotalGaragesCreated() { return totalGaragesCreated; }
 };
 
-// Initialize the static variable
+// Initialize static variable
 int Garage::totalGaragesCreated = 0;
 
-// Main function
 int main() {
-    // Create a Garage object using the parameterized constructor
+    // Create a Garage
     Garage garage(2);
 
-    // Create Car objects using the parameterized constructor
+    // Create Car and ElectricCar objects
     Car car1("Toyota", "Corolla", 2020, "Blue", 10);
-    Car car2("Honda", "Civic", 2019, "Red", 12);
+    ElectricCar car2("Tesla", "Model 3", 2021, "White", 0, 85);
 
     // Add cars to the garage
     garage.addCar(car1);
@@ -198,10 +161,7 @@ int main() {
     // List cars in the garage
     garage.listCars();
 
-    // Find a specific car by make and model
-    garage.findCarByMakeModel("Toyota", "Corolla");
-
-    // Display the total number of cars and garages created
+    // Display total counts
     cout << "Total cars created: " << Car::getTotalCarsCreated() << endl;
     cout << "Total garages created: " << Garage::getTotalGaragesCreated() << endl;
 
