@@ -88,3 +88,8 @@ Tracking Total Garages Created:
 
 The Garage class has a static variable totalGaragesCreated that tracks the total number of garages instantiated. Every time a new Garage object is created, this variable is incremented.
 The static member function getTotalGaragesCreated() is used to access the value of totalGaragesCreated.
+
+
+An abstract class is a class that cannot be instantiated on its own and often serves as a blueprint for other classes
+
+A virtual function is a member function in a base class that you expect to override in derived classes. Virtual functions enable runtime polymorphism, which allows the program to determine the function to call dynamically based on the actual object type, even when accessed through a base class reference or pointer.
