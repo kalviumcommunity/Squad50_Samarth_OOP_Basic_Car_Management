@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-// Vehicle class (Base class for Car)
+// Abstract class: Vehicle (Base class for Car)
 class Vehicle {
 protected:
     string make;
@@ -15,9 +15,12 @@ public:
     Vehicle(string mk = "Unknown", string mdl = "Unknown", int yr = 0)
         : make(mk), model(mdl), year(yr) {}
 
-    // Virtual function to allow runtime polymorphism
-    virtual void displayInfo() const {
-        cout << "Make: " << make << ", Model: " << model << ", Year: " << year << endl;
+    // Pure virtual function to make this class abstract
+    virtual void displayInfo() const = 0;
+
+    // Virtual destructor to ensure proper cleanup
+    virtual ~Vehicle() {
+        cout << "Vehicle destructor called for: " << model << endl;
     }
 };
 
@@ -43,7 +46,7 @@ public:
     }
 
     // Destructor
-    ~Car() {
+    ~Car() override {
         cout << "Destructor called for Car: " << model << endl;
         totalCarsCreated--;
     }
@@ -73,6 +76,12 @@ public:
     void refuel(int amount) {
         fuelLevel += amount;
         cout << "Refueled. Fuel level: " << fuelLevel << endl;
+    }
+
+    // Override the pure virtual function from Vehicle (Run-time Polymorphism)
+    void displayInfo() const override {
+        cout << "Make: " << make << ", Model: " << model << ", Year: " << year
+             << ", Color: " << color << ", Fuel Level: " << fuelLevel << endl;
     }
 
     // Static function to get the total number of cars created
@@ -109,7 +118,7 @@ public:
 class Garage {
 private:
     int capacity;
-    vector<Car> cars;
+    vector<Vehicle*> vehicles;  // Store pointers to Vehicle objects
 
 public:
     static int totalGaragesCreated;
@@ -126,21 +135,21 @@ public:
         totalGaragesCreated--;
     }
 
-    // Add car to the garage
-    void addCar(Car car) {
-        if (cars.size() < capacity) {
-            cars.push_back(car);
-            cout << "Car added to the garage." << endl;
+    // Add vehicle to the garage
+    void addVehicle(Vehicle* vehicle) {
+        if (vehicles.size() < capacity) {
+            vehicles.push_back(vehicle);
+            cout << "Vehicle added to the garage." << endl;
         } else {
             cout << "Garage is full." << endl;
         }
     }
 
-    // List all cars in the garage
-    void listCars() const {
-        cout << "Listing cars in the garage:" << endl;
-        for (const auto& car : cars) {
-            car.displayInfo();
+    // List all vehicles in the garage
+    void listVehicles() const {
+        cout << "Listing vehicles in the garage:" << endl;
+        for (const auto& vehicle : vehicles) {
+            vehicle->displayInfo();  // Runtime polymorphism in action
         }
     }
 
@@ -155,24 +164,28 @@ int main() {
     // Create a Garage
     Garage garage(2);
 
-    // Create Car and ElectricCar objects (Demonstrating Constructor Overloading)
-    Car car1("Toyota", "Corolla", 2020, "Blue", 10);
-    ElectricCar car2("Tesla", "Model 3", 2021, "White", 0, 85);
+    // Create Car and ElectricCar objects
+    Car* car1 = new Car("Toyota", "Corolla", 2020, "Blue", 10);
+    ElectricCar* car2 = new ElectricCar("Tesla", "Model 3", 2021, "White", 0, 85);
 
-    // Add cars to the garage
-    garage.addCar(car1);
-    garage.addCar(car2);
+    // Add vehicles to the garage
+    garage.addVehicle(car1);
+    garage.addVehicle(car2);
 
-    // Start the cars
-    car1.start();
-    car2.start();
+    // Start the vehicles
+    car1->start();
+    car2->start();
 
-    // List cars in the garage
-    garage.listCars();
+    // List vehicles in the garage
+    garage.listVehicles();
 
     // Display total counts
     cout << "Total cars created: " << Car::getTotalCarsCreated() << endl;
     cout << "Total garages created: " << Garage::getTotalGaragesCreated() << endl;
+
+    // Clean up dynamically allocated memory
+    delete car1;
+    delete car2;
 
     return 0;
 }

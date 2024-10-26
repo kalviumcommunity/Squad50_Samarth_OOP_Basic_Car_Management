@@ -63,6 +63,18 @@ Usage: The this pointer is used to reference the current object within a method 
 ### Encapsulation
 Usage: Encapsulation is achieved by keeping the attributes private and providing public getter and setter methods to access and modify them.
 
+Polymorphism is an essential concept in Object-Oriented Programming (OOP). The term "polymorphism" means "many forms." It allows objects to be treated as instances of their parent class, even though they might be of a derived type. This capability provides flexibility and reusability by enabling one interface to be used for multiple implementations.
+
+Types of Polymorphism:
+
+Compile-time Polymorphism (Static Binding):
+Achieved through function overloading and operator overloading.
+The decision about which function to call is made at compile time.
+
+Run-time Polymorphism (Dynamic Binding):
+Achieved through function overriding.
+The decision about which function to call is made at runtime based on the type of object.
+
 
 What is a Static Variable?
 A static variable in a class is shared among all objects of that class. Unlike regular member variables that are unique to each object, a static variable has a single copy that is shared by all instances of the class. Static variables are often used to store data or counters that need to be common across all instances of a class.
