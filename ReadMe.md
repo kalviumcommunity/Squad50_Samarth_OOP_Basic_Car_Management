@@ -63,6 +63,18 @@ Usage: The this pointer is used to reference the current object within a method 
 ### Encapsulation
 Usage: Encapsulation is achieved by keeping the attributes private and providing public getter and setter methods to access and modify them.
 
+Polymorphism is an essential concept in Object-Oriented Programming (OOP). The term "polymorphism" means "many forms." It allows objects to be treated as instances of their parent class, even though they might be of a derived type. This capability provides flexibility and reusability by enabling one interface to be used for multiple implementations.
+
+Types of Polymorphism:
+
+Compile-time Polymorphism (Static Binding):
+Achieved through function overloading and operator overloading.
+The decision about which function to call is made at compile time.
+
+Run-time Polymorphism (Dynamic Binding):
+Achieved through function overriding.
+The decision about which function to call is made at runtime based on the type of object.
+
 
 What is a Static Variable?
 A static variable in a class is shared among all objects of that class. Unlike regular member variables that are unique to each object, a static variable has a single copy that is shared by all instances of the class. Static variables are often used to store data or counters that need to be common across all instances of a class.
@@ -76,7 +88,6 @@ Tracking Total Garages Created:
 
 The Garage class has a static variable totalGaragesCreated that tracks the total number of garages instantiated. Every time a new Garage object is created, this variable is incremented.
 The static member function getTotalGaragesCreated() is used to access the value of totalGaragesCreated.
-
 #### Encapsulation
 
 Encapsulation is one of the core principles of Object-Oriented Programming (OOP). It involves bundling the data (variables) and methods (functions) that operate on the data into a single unit or class. By using accessors (getters) and mutators (setters), we control access to the internal state of objects, ensuring that the data can only be modified in a controlled manner. This helps protect the integrity of the data and allows for better maintainability of the code. Encapsulation in this project allows us to manage and protect the properties of Car and Garage classes while providing a clear interface for interaction.
