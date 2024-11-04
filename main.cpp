@@ -11,7 +11,7 @@ protected:
     int year;
 
 public:
-    // Constructor
+    // Constructor for Vehicle class
     Vehicle(string mk = "Unknown", string mdl = "Unknown", int yr = 0)
         : make(mk), model(mdl), year(yr) {}
 
@@ -22,6 +22,11 @@ public:
     virtual ~Vehicle() {
         cout << "Vehicle destructor called for: " << model << endl;
     }
+
+    // Getters
+    string getMake() const { return make; }
+    string getModel() const { return model; }
+    int getYear() const { return year; }
 };
 
 // Car class (Derived from Vehicle - Single Inheritance)
@@ -78,14 +83,15 @@ public:
         cout << "Refueled. Fuel level: " << fuelLevel << endl;
     }
 
-    // Override the pure virtual function from Vehicle (Run-time Polymorphism)
-    void displayInfo() const override {
-        cout << "Make: " << make << ", Model: " << model << ", Year: " << year
-             << ", Color: " << color << ", Fuel Level: " << fuelLevel << endl;
-    }
-
     // Static function to get the total number of cars created
     static int getTotalCarsCreated() { return totalCarsCreated; }
+
+    // Overriding displayInfo function
+    void displayInfo() const override {
+        cout << "Car Make: " << make << ", Model: " << model
+             << ", Year: " << year << ", Color: " << color
+             << ", Fuel Level: " << fuelLevel << "%" << endl;
+    }
 };
 
 // Initialize static variable
@@ -145,20 +151,20 @@ public:
         }
     }
 
-    // List all vehicles in the garage
-    void listVehicles() const {
-        cout << "Listing vehicles in the garage:" << endl;
-        for (const auto& vehicle : vehicles) {
-            vehicle->displayInfo();  // Runtime polymorphism in action
-        }
-    }
-
     // Static function to get the total number of garages created
     static int getTotalGaragesCreated() { return totalGaragesCreated; }
 };
 
 // Initialize static variable
 int Garage::totalGaragesCreated = 0;
+
+// New Class for Displaying Vehicle Information
+class VehicleInfoDisplay {
+public:
+    static void displayVehicleInfo(const Vehicle& vehicle) {
+        vehicle.displayInfo();
+    }
+};
 
 int main() {
     // Create a Garage
@@ -176,8 +182,9 @@ int main() {
     car1->start();
     car2->start();
 
-    // List vehicles in the garage
-    garage.listVehicles();
+    // Use the new class to display vehicle information
+    VehicleInfoDisplay::displayVehicleInfo(*car1);
+    VehicleInfoDisplay::displayVehicleInfo(*car2);
 
     // Display total counts
     cout << "Total cars created: " << Car::getTotalCarsCreated() << endl;
