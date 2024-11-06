@@ -3,7 +3,7 @@
 #include <string>
 using namespace std;
 
-// Abstract class: Vehicle (Base class for Car)
+// Abstract class: Vehicle (Base class for all vehicles)
 class Vehicle
 {
 protected:
@@ -19,10 +19,8 @@ public:
     // Pure virtual function (making Vehicle abstract)
     virtual void displayInfo() const = 0;
 
-    virtual ~Vehicle()
-    {
-        cout << "Vehicle destructor called for: " << model << endl;
-    }
+    // Virtual destructor to allow proper cleanup for derived classes
+    virtual ~Vehicle() {}
 
     // Accessor methods
     string getMake() const { return make; }
@@ -43,19 +41,16 @@ public:
     Car() : Vehicle(), color("Unknown"), fuelLevel(0)
     {
         totalCarsCreated++;
-        cout << "Default constructor called for Car" << endl;
     }
 
     Car(string mk, string mdl, int yr, string clr, int fuel)
         : Vehicle(mk, mdl, yr), color(clr), fuelLevel(fuel)
     {
         totalCarsCreated++;
-        cout << "Parameterized constructor called for Car" << endl;
     }
 
     ~Car() override
     {
-        cout << "Destructor called for Car: " << model << endl;
         totalCarsCreated--;
     }
 
@@ -80,7 +75,6 @@ public:
     ElectricCar(string mk, string mdl, int yr, string clr, int fuel, int battery)
         : Car(mk, mdl, yr, clr, fuel), batteryLevel(battery)
     {
-        cout << "ElectricCar constructor called." << endl;
     }
 
     void displayInfo() const override
@@ -100,13 +94,9 @@ public:
     Truck(string mk, string mdl, int yr, int capacity)
         : Vehicle(mk, mdl, yr), cargoCapacity(capacity)
     {
-        cout << "Truck constructor called." << endl;
     }
 
-    ~Truck() override
-    {
-        cout << "Destructor called for Truck: " << model << endl;
-    }
+    ~Truck() override {}
 
     void displayInfo() const override
     {
@@ -115,8 +105,17 @@ public:
     }
 };
 
-// Garage class definition
-class Garage
+// Abstract Garage Interface (for Dependency Inversion)
+class IGarage
+{
+public:
+    virtual void addVehicle(Vehicle *vehicle) = 0;
+    virtual void displayAllVehicles() const = 0;
+    virtual ~IGarage() {}
+};
+
+// Concrete Garage class (Derived from IGarage)
+class Garage : public IGarage
 {
 private:
     int capacity;
@@ -128,34 +127,40 @@ public:
     Garage(int cap = 1) : capacity(cap)
     {
         totalGaragesCreated++;
-        cout << "Garage constructor called." << endl;
     }
 
     ~Garage()
     {
-        cout << "Destructor called for Garage." << endl;
         totalGaragesCreated--;
 
-        // Free all dynamically allocated vehicles safely using an iterator
-        for (auto it = vehicles.begin(); it != vehicles.end(); ++it)
+        // Free all dynamically allocated vehicles safely using a traditional for loop
+        for (int i = 0; i < vehicles.size(); ++i)
         {
-            delete *it; // Free the memory allocated for each vehicle
+            delete vehicles[i]; // Free the memory allocated for each vehicle
         }
 
         // Clear the vector (this ensures the vector is empty after deletion)
         vehicles.clear();
     }
 
-    void addVehicle(Vehicle *vehicle)
+    void addVehicle(Vehicle *vehicle) override
     {
         if (vehicles.size() < capacity)
         {
             vehicles.push_back(vehicle);
-            cout << "Vehicle added to the garage." << endl;
         }
         else
         {
             cout << "Garage is full." << endl;
+        }
+    }
+
+    void displayAllVehicles() const override
+    {
+        // Traditional for loop for displaying all vehicles
+        for (int i = 0; i < vehicles.size(); ++i)
+        {
+            vehicles[i]->displayInfo();
         }
     }
 
@@ -176,21 +181,24 @@ public:
 
 int main()
 {
+    // Create a garage with capacity for 3 vehicles
     Garage garage(3);
 
+    // Create vehicle objects (can be any derived class of Vehicle)
     Car *car1 = new Car("Toyota", "Corolla", 2020, "Blue", 10);
     ElectricCar *car2 = new ElectricCar("Tesla", "Model 3", 2021, "White", 0, 85);
-    Truck *truck1 = new Truck("Ford", "F-150", 2022, 1000); // New Truck object
+    Truck *truck1 = new Truck("Ford", "F-150", 2022, 1000);
 
+    // Add vehicles to the garage
     garage.addVehicle(car1);
     garage.addVehicle(car2);
-    garage.addVehicle(truck1); // Add truck to garage
+    garage.addVehicle(truck1);
 
-    VehicleInfoDisplay::displayVehicleInfo(*car1);
-    VehicleInfoDisplay::displayVehicleInfo(*car2);
-    VehicleInfoDisplay::displayVehicleInfo(*truck1); // Display truck info
+    // Display information about all vehicles in the garage
+    garage.displayAllVehicles();
 
-    cout << "Total cars created: " << Car::totalCarsCreated << endl; // Use static variable directly
+    // Show the total number of cars and garages created
+    // cout << "Total cars created: " << Car::totalCarsCreated << endl;
     cout << "Total garages created: " << Garage::getTotalGaragesCreated() << endl;
 
     // No need to delete vehicles manually, the garage destructor handles it
